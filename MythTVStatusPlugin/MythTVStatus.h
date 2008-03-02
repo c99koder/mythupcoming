@@ -3,7 +3,7 @@
 //  mythstatus
 //
 //  Created by Sam Steele on 5/27/07.
-//  Copyright 2007 Sam Steele. All rights reserved.
+//  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -36,10 +36,10 @@ enum RecStatusType {
 };
 
 @interface MythTVStatus : NSObject {
-    CFReadStreamRef rStream;
-    CFWriteStreamRef wStream;
+  CFReadStreamRef rStream;
+  CFWriteStreamRef wStream;
 	BOOL connected;
-	int mProto,mPort;
+	int mProto,mPort,mProgInfoSize;
 	NSString *mAddress;
 }
 

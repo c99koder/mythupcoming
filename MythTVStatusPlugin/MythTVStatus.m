@@ -3,7 +3,7 @@
 //  mythstatus
 //
 //  Created by Sam Steele on 5/27/07.
-//  Copyright 2007 Sam Steele. All rights reserved.
+//  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 
 #import "MythTVStatus.h"
@@ -58,7 +58,7 @@
 {
 	self = [super init];
 	
-	[self connect:address port:p protocol:34];
+	[self connect:address port:p protocol:40];
 	return self;
 }
 
@@ -67,8 +67,17 @@
 	mProto = proto;
 	mPort = p;
 	mAddress = [address copy];
+	if(proto <= 30) {
+		mProgInfoSize = 41;
+	} else if(proto == 31) {
+		mProgInfoSize = 42;
+	} else if(proto <= 35) {
+		mProgInfoSize = 43;
+	} else if(proto > 35) {
+		mProgInfoSize = 46;
+	}
 	
-	CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,address,p,&rStream,&wStream);
+	CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,(CFStringRef)address,p,&rStream,&wStream);
 	CFReadStreamSetProperty(rStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
 	CFReadStreamOpen(rStream);
 	CFWriteStreamOpen(wStream);
@@ -77,8 +86,6 @@
 }
 
 - (BOOL)didFinishConnecting {
-	int i;
-	
 	if(connected == TRUE) {
 		return TRUE;
 	} else {
@@ -133,7 +140,7 @@
 - (void)sendCommand:(NSString *)cmd {
 	NSString *size = [[NSString stringWithFormat:@"%i", [cmd length]]  stringByPaddingToLength:8 withString: @" " startingAtIndex:0];
 	NSString *buffer = [NSString stringWithFormat:@"%@%@", size, cmd];
-	CFWriteStreamWrite(wStream, [buffer cString], [buffer length]);
+	CFWriteStreamWrite(wStream, [buffer UTF8String], [buffer length]);
 }
 
 - (void)disconnect {
@@ -150,7 +157,7 @@
 - (NSArray *)getScheduledRecordings {
 	[self sendCommand:@"QUERY_GETALLPENDING"];
 	NSArray *reply = [self readReply];
-	int count = [reply count] / 43;
+	int count = [reply count] / mProgInfoSize;
 	NSMutableArray *recordings = nil;
 	NSString *dateSuffix;
 	int i=0;
@@ -161,26 +168,26 @@
 		recordings = [NSMutableArray arrayWithCapacity:count];
 		
 		for(i=0; i < count; i++) {
-			if([[reply objectAtIndex:(i*43 + 23)] intValue] == rsWillRecord) {
-				if([[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*43 + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1d" timeZone:nil locale:nil] intValue] == 1) {
+			if([[reply objectAtIndex:(i*mProgInfoSize + 23)] intValue] == rsWillRecord) {
+				if([[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*mProgInfoSize + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1d" timeZone:nil locale:nil] intValue] == 1) {
 					dateSuffix = @"st";
-				} else if([[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*43 + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1d" timeZone:nil locale:nil] intValue] == 2) {
+				} else if([[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*mProgInfoSize + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1d" timeZone:nil locale:nil] intValue] == 2) {
 					dateSuffix = @"nd";
-				} else if([[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*43 + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1d" timeZone:nil locale:nil] intValue] == 3) {
+				} else if([[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*mProgInfoSize + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1d" timeZone:nil locale:nil] intValue] == 3) {
 					dateSuffix = @"rd";
 				} else {
 					dateSuffix = @"th";
 				}
 				[recordings addObject:[NSArray arrayWithObjects:
-					[reply objectAtIndex:(i*43 + 2)],
-					[reply objectAtIndex:(i*43 + 3)],
-					[reply objectAtIndex:(i*43 + 4)],
-					[reply objectAtIndex:(i*43 + 5)],
-					[reply objectAtIndex:(i*43 + 7)],
-					[reply objectAtIndex:(i*43 + 8)],
-					[[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*43 + 13)] doubleValue]] descriptionWithCalendarFormat:@"%A, %B %1d" timeZone:nil locale:nil] stringByAppendingString:dateSuffix],
-					[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*43 + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1I:%M %p" timeZone:nil locale:nil],
-					[reply objectAtIndex:(i*43 + 23)],
+					[reply objectAtIndex:(i*mProgInfoSize + 2)],
+					[reply objectAtIndex:(i*mProgInfoSize + 3)],
+					[reply objectAtIndex:(i*mProgInfoSize + 4)],
+					[reply objectAtIndex:(i*mProgInfoSize + 5)],
+					[reply objectAtIndex:(i*mProgInfoSize + 7)],
+					[reply objectAtIndex:(i*mProgInfoSize + 8)],
+					[[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*mProgInfoSize + 13)] doubleValue]] descriptionWithCalendarFormat:@"%A, %B %1d" timeZone:nil locale:nil] stringByAppendingString:dateSuffix],
+					[[NSDate dateWithTimeIntervalSince1970:[[reply objectAtIndex:(i*mProgInfoSize + 13)] doubleValue]] descriptionWithCalendarFormat:@"%1I:%M %p" timeZone:nil locale:nil],
+					[reply objectAtIndex:(i*mProgInfoSize + 23)],
 					nil			
 				]];
 			}

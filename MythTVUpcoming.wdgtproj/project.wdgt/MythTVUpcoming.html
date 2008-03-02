@@ -5,9 +5,9 @@
     <style type="text/css" title="AppleStyle">
         @import "MythTVUpcoming.css";
     </style>
-    <script type="text/javascript" src="AppleClasses/AppleAnimator.js" charset="utf-8"></script>
-    <script type="text/javascript" src="AppleClasses/AppleButton.js" charset="utf-8"></script>
-    <script type="text/javascript" src="AppleClasses/AppleInfoButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleAnimator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleInfoButton.js" charset="utf-8"></script>
     <script type="text/javascript" src="localizedStrings.js" charset="utf-8"></script>
     <script type="text/javascript" src="Parts/utilities.js" charset="utf-8"></script>
     <script type="text/javascript" src="Parts/setup.js" charset="utf-8"></script>
@@ -15,15 +15,15 @@
     <script type="text/javascript" src="Parts/InfoButton.js" charset="utf-8"></script>
     <script type="text/javascript" src="Parts/GlassButton.js" charset="utf-8"></script>
     <script type="text/javascript" src="MythTVUpcoming.js" charset="utf-8"></script>
-<script type="text/javascript" src="AppleClasses/AppleScrollbar.js" charset="utf-8"></script>
-<script type="text/javascript" src="AppleClasses/AppleScrollArea.js" charset="utf-8"></script>
+<script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleScrollbar.js" charset="utf-8"></script>
+<script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleScrollArea.js" charset="utf-8"></script>
 <script type="text/javascript" src="Parts/ScrollArea.js" charset="utf-8"></script>
 <script type="text/javascript" src="Parts/Shape.js" charset="utf-8"></script>
 </head>
 <body onload="load();">
 	<div id="front">
 		<img id="frontImg" src="Images/front.png" alt="" apple-locked="true" apple-part="com.apple.Dashcode.part.frontimage" apple-style="image-theme: 2; image-shape: 3; image-opacity: 1.00; image-top-color: 0.1686,0.1686,0.5490; image-bottom-color: 0.3982,0.3982,0.3982; image-radius: 12,12,12,12; image-border: 1; image-border-color: 1.0000,1.0000,1.0000; image-border-width: 2; shine-include-shine: 0; shine-include-alphas: 0; shine-height: 0.96; glass-include-arc: 1; shine-include-bottom: 0; shadow-include-shadow: 1; shadow-blur: 9.00; shadow-offset: -1.00,-6.00; shadow-color: 0.0000,0.0000,0.0000,0.3333;">
-		<div apple-part="com.apple.Dashcode.part.toprectangleshape" class="apple-no-children" apple-style="image-theme: 0; image-shape: 9; image-button-type: 3; image-opacity: 1.00; image-top-color: 0.0392,0.5804,0.8392; image-bottom-color: 0.3982,0.3982,0.3982; image-radius: 10,10,-1,-1; image-border: 0; image-border-color: 1.0000,1.0000,1.0000; image-border-width: 1; shadow-include-shadow: 0; shadow-blur: 3.00;" id="topRectangleShape7" apple-group="topRectangleShape7" style=""></div>
+		<div apple-part="com.apple.Dashcode.part.toprectangleshape" class="apple-no-children" apple-style="image-theme: 0; image-shape: 9; image-button-type: 3; image-opacity: 1.00; image-top-color: 0.0392,0.5804,0.8392; image-bottom-color: 0.3982,0.3982,0.3982; image-radius: 10,10,-1,-1; image-border: 0; image-border-color: 1.0000,1.0000,1.0000; image-border-width: 1; shadow-include-shadow: 0; shadow-blur: 3.00;" id="topRectangleShape7" apple-group="topRectangleShape7"></div>
 	<div class="apple-no-children" id="info" apple-part="com.apple.Dashcode.part.infobutton" apple-default-image-visibility="hidden"></div>
         <div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" id="titleText" apple-group="text"></div>
     
@@ -101,7 +101,9 @@
     
 	
     
-	<div id="content" class="content" apple-group="scrollArea" style="position: absolute; left: 0px; top: 0px; right: 22px; bottom: 0px; overflow: hidden; " apple-default-image-visibility="hidden"></div>
+	
+    
+	<div id="content" class="content" apple-group="scrollArea" style="position: absolute; left: 0px; top: 0px; bottom: 0px; overflow-x: hidden; overflow-y: hidden; right: 0px; " apple-default-image-visibility="hidden"></div>
     
 	</div>
 	<div apple-part="com.apple.Dashcode.part.text" class="apple-text apple-no-children" apple-default-image-visibility="hidden" id="statusText" apple-group="text2"></div>
