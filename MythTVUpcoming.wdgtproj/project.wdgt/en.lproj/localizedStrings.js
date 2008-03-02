@@ -1,7 +1,7 @@
 var localizedStrings = new Object;
 
 localizedStrings["Done"] = "Done";
-localizedStrings['Upcoming Recordings'] = 'Upcoming Recordings';
+localizedStrings['Upcoming Recordings'] = 'Upcoming MythTV Recordings';
 localizedStrings['backendIP'] = 'MythTV Backend IP:';
 localizedStrings['Port'] = 'Port:';
 localizedStrings['VERSION'] = 'MythTV Upcoming Recordings Widget v1.0.1';
